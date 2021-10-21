@@ -13,6 +13,7 @@ To reproduce the spatial experiments proposed in the article, you can run the fi
 ## Run SpaRTaCo on the simulation experiments
 You can run SpaRTaCo multiple times in parallel on each and every replica of the same experiment with the script `.../Analysis/ModelFitting_Simulations.R`.
 Before running the code, 
+
     1. set the number of the simulation scenario `Scenario`;
     2. set `n_replicas` equal to the number of replicas you made of this simulation experiment;
     3. set the number of parallel run of the estimation algorithm with `n_starting_points`;
