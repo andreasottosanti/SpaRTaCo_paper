@@ -1,0 +1,30 @@
+library(spartaco)
+
+Scenario <- 1  
+
+n_replicas <- 10  # This depends from how many replicas of the experiment you generated
+n_starting_points <- 5  # This value gives the number of times you want to run the estimation algorithm in parallel
+parallel::mclapply(1:n_replicas, function(i) {
+  parallel::mclapply(1:n_starting_points, function(j){
+    print(paste("Loading Scenario",Scenario,"_",i,sep=""))
+    # In the following line, substitute '...' with the path of the directory where you saved the replicas of the experiment,
+    # generated with the specific code
+    load(paste(".../Scenario",Scenario,"_",i,".Rdata",sep=""))  
+    results <- spartaco(x = Simulation$x, 
+                    coordinates = Simulation$coordinates, 
+                    K = 3, R = 3,
+                    traceRatio = 10, max.iter = 5*10^3,
+                    metropolis.iterations = 150,
+                    estimate.iterations = 10)
+    # In the following line, substitute '...' with the path of the directory where you want to save the results
+    save(results, file = paste(".../Scenario",Scenario,"_run",j,"_",
+                               substr(Sys.time(),1,10),"_",
+                               substr(Sys.time(),12,13),"_",
+                               substr(Sys.time(),15,16),"_",
+                               substr(Sys.time(),18,19),".Rdata",sep=""))
+  },
+  mc.cores = 5)
+}, mc.cores = 5)    
+
+# You can set the mc.cores parameters according to the characteristics of your machine
+# Here we set 25 cores
