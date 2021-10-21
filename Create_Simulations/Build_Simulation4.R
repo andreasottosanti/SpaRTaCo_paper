@@ -5,13 +5,13 @@
 # ---import the coordinates a create the spot labels
 load("~/Create_Simulations/coordinates.Rdata")
 Ds <- c(rep(1,200),rep(2,200),rep(3,200))  # this is the vector of the column clustering labels
+tableDs <- as.vector(table(Ds))
 plot(coordinates, col = Ds, pch = 16)
 Dist <- as.matrix(stats::dist(coordinates))
 
 # ---prepare the vector of row clustering labels
 n1 <- n2 <- n3 <- 200  # size of the row clusters
 Cs <- numeric(n1 + n2 + n3)   # this is the vector of the row clustering labels
-tableDs <- as.vector(table(Ds))
 Cs[1:n1] <- 1
 Cs[(n1+1):(n1+n2)] <- 2
 Cs[(n1+n2+1):(n1+n2+n3)] <- 3
