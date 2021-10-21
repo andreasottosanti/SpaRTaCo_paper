@@ -16,8 +16,8 @@ Before running the code,
 
 1. set the number of the simulation scenario `Scenario`;
 2. set `n_replicas` equal to the number of replicas you made of this simulation experiment;
-3. set the number of parallel run of the estimation algorithm with `n_starting_points`;
-4. write the path of the directory which contains the replicas of the experiment;
-5. set the model;
-6. set the directory where you want to save the results (and eventually the name of the saved file);
+3. set the number of runs run of the estimation algorithm with `n_starting_points`;
+4. write the path of the directory where you stored the replicas of the experiment;
+5. set the model options in the function `spartaco`;
+6. set the directory where you want to save the results;
 7. set the number of cores.
