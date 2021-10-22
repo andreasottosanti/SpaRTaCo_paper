@@ -10,8 +10,6 @@ n_starting_points <- 5  # This value gives the number of times you want to run t
 parallel::mclapply(1:n_replicas, function(i) {
   parallel::mclapply(1:n_starting_points, function(j){
     print(paste("Loading Scenario",Scenario,"_",i,sep=""))
-    # In the following line, substitute '...' with the path of the directory where you saved the replicas of the experiment,
-    # generated with the specific code
     load(paste(data.directory,"/Scenario",Scenario,"_",i,".Rdata",sep=""))  
     results <- spartaco(x = Simulation$x, 
                     coordinates = Simulation$coordinates, 
@@ -19,7 +17,6 @@ parallel::mclapply(1:n_replicas, function(i) {
                     traceRatio = 10, max.iter = 5*10^3,
                     metropolis.iterations = 150,
                     estimate.iterations = 10)
-    # In the following line, substitute '...' with the path of the directory where you want to save the results
     save(results, file = paste(results.directory,"/Scenario",Scenario,"_replica",i,"_run",j,"_",
                                substr(Sys.time(),1,10),"_",
                                substr(Sys.time(),12,13),"_",
