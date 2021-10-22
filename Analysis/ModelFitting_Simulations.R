@@ -17,7 +17,7 @@ parallel::mclapply(1:n_replicas, function(i) {
                     metropolis.iterations = 150,
                     estimate.iterations = 10)
     # In the following line, substitute '...' with the path of the directory where you want to save the results
-    save(results, file = paste(".../Scenario",Scenario,"_run",j,"_",
+    save(results, file = paste(".../Scenario",Scenario,"_replica",i,"_run",j,"_",
                                substr(Sys.time(),1,10),"_",
                                substr(Sys.time(),12,13),"_",
                                substr(Sys.time(),15,16),"_",
