@@ -8,7 +8,7 @@ To run SpaRTaCo, you need to install the library `spartaco` available [here](htt
 To reproduce the spatial experiments proposed in the article, run the files contained into the directory `.../Create_Simulations`. Every file generates and saves multiple replicas of the same experiment. You can choose the number of replicas with `n_replicas` (default is `n_replicas = 10` for Simulations 1,..,4 and `n_replicas = 1` for Simulation 5). You need also to specify a directory where to save the simulated datasets.
 
 &nbsp;
-## Fitting SpaRTaCo on the simulation experiments
+## Simulation experiments: model fitting and data analysis
 SpaRTaCo can be run multiple times in parallel on each and every replica of the same experiment with just one script, `.../Analysis/ModelFitting_Simulations.R`.
 Before running the code, 
 
@@ -20,8 +20,6 @@ Before running the code,
 6. set the model options in the function `spartaco` (see the help for more details);
 7. set the number of cores according to your machine characteristics.
 
-&nbsp;
-## Analyse results from the simulations
 To analyse the results obtained on the Simulations 1,...,4 run the script `.../Analysis/Analysis_Simulations_1to4.R`. 
 Before running the code,
 
