@@ -28,4 +28,6 @@ Before running the code,
 3. set `results.directory` with the path of the directory where you stored the results;
 4. set `n_replicas` equal to the number of replicas of the experiment you have generated;
 
+To analyse the results from **Simulation 5**, it is sufficient to substitute `Simulation$original.Cs` with `Simulation$subCluster.Cs`.
+
 The competing models are set as described in Section 4.2 of the article.
