@@ -4,7 +4,7 @@ This repository contains the scripts to reproduce the simulations and the analys
 To run SpaRTaCo, you need to install the library `spartaco` available [here](https://github.com/andreasottosanti/spartaco).
 
 &nbsp;
-## Reproduce the simulation experiments
+## Simulation experiments: generate the data
 To reproduce the spatial experiments proposed in the article, run the files contained into the directory `.../Create_Simulations`. Every file generates and saves multiple replicas of the same experiment. You can choose the number of replicas with `n_replicas` (default is `n_replicas = 10` for Simulations 1,..,4 and `n_replicas = 1` for Simulation 5). You need also to specify a directory where to save the simulated datasets.
 
 &nbsp;
