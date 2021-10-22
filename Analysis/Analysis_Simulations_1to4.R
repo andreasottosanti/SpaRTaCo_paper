@@ -58,6 +58,7 @@ for(i in 1:n_replicas){
   file.list <- dir(results.directory)[grep(paste("Scenario",Scenario,"_replica",i,"_",sep=""), dir(results.directory))]
   for(j in 1:length(file.list)){
     load(paste(results.directory,"/",file.list[j],sep=""))
+    model.dim <- dim(results$mu)
     if(max(results$logL) > loglikelihoods[i]){
       loglikelihoods[i] <- max(results$logL)
       Best.Cs[,i] <- results$Cs
@@ -68,9 +69,9 @@ for(i in 1:n_replicas){
   CER.values[i,2] <- CER(P = Simulation$original.Ds, Q = Best.Ds[,i])
 
   # ---sparseBC
-  sparseBC1 <- sparseBC(Simulation$x, k = 3, r = 3, lambda = 1)
-  sparseBC2 <- sparseBC(Simulation$x, k = 3, r = 3, lambda = 10)
-  sparseBC3 <- sparseBC(Simulation$x, k = 3, r = 3, lambda = 20)
+  sparseBC1 <- sparseBC(Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 1)
+  sparseBC2 <- sparseBC(Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 10)
+  sparseBC3 <- sparseBC(Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 20)
   Best.Cs.sparseBC[,i,1] <- sparseBC1$Cs
   Best.Ds.sparseBC[,i,1] <- sparseBC1$Ds
   Best.Cs.sparseBC[,i,2] <- sparseBC2$Cs
@@ -85,31 +86,31 @@ for(i in 1:n_replicas){
   CER.sparseBC[i,2,3] <- CER(P = Simulation$original.Ds, Q = sparseBC3$Ds)
 
   # ---BC
-  BC <- sparseBC(Simulation$x, k = 3, r = 3, lambda = 0)
+  BC <- sparseBC(Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 0)
   CER.BC[i,1] <- CER(P = Simulation$original.Cs, Q = BC$Cs)
   CER.BC[i,2] <- CER(P = Simulation$original.Ds, Q = BC$Ds)
   Best.Cs.BC[,i] <- BC$Cs
   Best.Ds.BC[,i] <- BC$Ds
 
   # ---kmeans
-  kmrow <- kmeans(Simulation$x, centers = 3, nstart = 10)
-  kmcol <- kmeans(t(Simulation$x), centers = 3, nstart = 10)
+  kmrow <- kmeans(Simulation$x, centers = model.dim[1], nstart = 10)
+  kmcol <- kmeans(t(Simulation$x), centers = model.dim[2], nstart = 10)
   CER.kmeans[i,1] <- CER(P = Simulation$original.Cs, Q = kmrow$clust)
   CER.kmeans[i,2] <- CER(P = Simulation$original.Ds, Q = kmcol$clust)
   Best.Cs.kmeans[,i] <- kmrow$clust
   Best.Ds.kmeans[,i] <- kmcol$clust
 
   # ---LBM
-  lbm <- coclusterContinuous(data = Simulation$x, nbcocluster = c(3,3))
+  lbm <- coclusterContinuous(data = Simulation$x, nbcocluster = model.dim)
   CER.LBM[i,1] <- CER(P = Simulation$original.Cs, Q = lbm@rowclass)
   CER.LBM[i,2] <- CER(P = Simulation$original.Ds, Q = lbm@colclass)
   Best.Cs.LBM[,i] <- lbm@rowclass
   Best.Ds.LBM[,i] <- lbm@colclass
 
   # ---MVNb
-  MVNb1 <- matrixBC2(x = Simulation$x, k = 3, r = 3, lambda = 1, alpha = .25, beta = .25)
-  MVNb2 <- matrixBC2(x = Simulation$x, k = 3, r = 3, lambda = 10, alpha = 2.5, beta = 2.5)
-  MVNb3 <- matrixBC2(x = Simulation$x, k = 3, r = 3, lambda = 20, alpha = 5, beta = 5)
+  MVNb1 <- matrixBC2(x = Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 1, alpha = .25, beta = .25)
+  MVNb2 <- matrixBC2(x = Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 10, alpha = 2.5, beta = 2.5)
+  MVNb3 <- matrixBC2(x = Simulation$x, k = model.dim[1], r = model.dim[2], lambda = 20, alpha = 5, beta = 5)
   CER.MVNb[i,1,1] <- CER(P = Simulation$original.Cs, Q = MVNb1$Cs)
   CER.MVNb[i,2,1] <- CER(P = Simulation$original.Ds, Q = MVNb1$Ds)
   CER.MVNb[i,1,2] <- CER(P = Simulation$original.Cs, Q = MVNb2$Cs)
