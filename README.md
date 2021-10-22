@@ -20,7 +20,7 @@ Before running the code,
 6. set the model options in the function `spartaco` (see the help for more details);
 7. set the number of cores according to your machine characteristics.
 
-To analyse the results obtained on the Simulations 1,...,4 run the script `.../Analysis/Analysis_Simulations_1to4.R`. 
+To analyse the results obtained on the **Simulations 1, 2, 3 and 4**, run the script `.../Analysis/Analysis_Simulations_1to4.R`. 
 Before running the code,
 
 1. set the path of the file `matrixBC_modified.R`;
