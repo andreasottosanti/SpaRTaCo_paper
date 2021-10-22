@@ -13,9 +13,9 @@ SpaRTaCo can be run multiple times in parallel on each and every replica of the 
 Before running the code, 
 
 1. set the number of the simulation scenario `Scenario`;
-2. set `n_replicas` equal to the number of replicas of the experiment you have generated;
-3. set how many times you want to run the estimation algorithm in parallel with `n_starting_points`;
-4. write the path of the directory where you stored the replicas of the experiment;
-5. set the model options in the function `spartaco` (see the help for more details);
-6. set the directory where you want to save the results;
+2. set `data.directory` with the path of the directory where you stored the replicas of the experiment;
+3. set `results.directory` with the path of the directory where you the results to be saved;
+4. set `n_replicas` equal to the number of replicas of the experiment you have generated;
+5. set how many times you want to run the estimation algorithm in parallel with `n_starting_points`;
+6. set the model options in the function `spartaco` (see the help for more details);
 7. set the number of cores according to your machine characteristics.
