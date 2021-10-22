@@ -1,15 +1,18 @@
 library(spartaco)
 
 Scenario <- 1  
+data.directory <- "..."        # substitute '...' with the path where the data are stored
+results.directory <- "..."     # substitute '...' with the path where the results will be stored
 
 n_replicas <- 10  # This depends from how many replicas of the experiment you generated
 n_starting_points <- 5  # This value gives the number of times you want to run the estimation algorithm in parallel
+
 parallel::mclapply(1:n_replicas, function(i) {
   parallel::mclapply(1:n_starting_points, function(j){
     print(paste("Loading Scenario",Scenario,"_",i,sep=""))
     # In the following line, substitute '...' with the path of the directory where you saved the replicas of the experiment,
     # generated with the specific code
-    load(paste(".../Scenario",Scenario,"_",i,".Rdata",sep=""))  
+    load(paste(data.directory,"/Scenario",Scenario,"_",i,".Rdata",sep=""))  
     results <- spartaco(x = Simulation$x, 
                     coordinates = Simulation$coordinates, 
                     K = 3, R = 3,
@@ -17,7 +20,7 @@ parallel::mclapply(1:n_replicas, function(i) {
                     metropolis.iterations = 150,
                     estimate.iterations = 10)
     # In the following line, substitute '...' with the path of the directory where you want to save the results
-    save(results, file = paste(".../Scenario",Scenario,"_replica",i,"_run",j,"_",
+    save(results, file = paste(results.directory,"/Scenario",Scenario,"_replica",i,"_run",j,"_",
                                substr(Sys.time(),1,10),"_",
                                substr(Sys.time(),12,13),"_",
                                substr(Sys.time(),15,16),"_",
