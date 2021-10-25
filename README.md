@@ -31,3 +31,7 @@ Before running the code,
 To analyse the results from **Simulation 5**, it is sufficient to substitute `Simulation$original.Cs` with `Simulation$subCluster.Cs`.
 
 The competing models are set as described in Section 4.2 of the article.
+
+&nbsp;
+## spatialLIBD data: preparation and preprocessing
+The dataset used in Section 5 of the manuscript can be preprocessed using the script `.../Analysis/spatialLIBDdata_preprocessing.R`.
