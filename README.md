@@ -33,5 +33,7 @@ To analyse the results from **Simulation 5**, it is sufficient to substitute `Si
 The competing models are set as described in Section 4.2 of the article.
 
 &nbsp;
-## spatialLIBD data: preparation and preprocessing
-The dataset used in Section 5 of the manuscript can be preprocessed using the script `.../Analysis/spatialLIBDdata_preprocessing.R`.
+## spatialLIBD data
+- The dataset used in Section 5 of the manuscript can be preprocessed using the script `.../Analysis/spatialLIBDdata_preprocessing.R`.
+- To fit SpaRTaCo over the spatialLIBD data, use the script `.../Analysis/ModelFitting_spatialLIBD` (see the comments in the script before running the code).
+
