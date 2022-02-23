@@ -17,7 +17,7 @@ Cs[(n1+1):(n1+n2)] <- 2
 Cs[(n1+n2+1):(n1+n2+n3)] <- 3
 
 # ---define the spatial signal-to-noise ratios
-ratio <- 1
+ratio <- 3
 Ratios <- matrix(ratio,3,3)
 # convert the spatial signal-to-noise ratios into the values of tau and xi
 c_Delta <- 10    # this is the quantity tau[k,r]+xi[k,r]
@@ -35,17 +35,15 @@ for(j in 1:n_replicas){
   x <- matrix(0, sum(n1+n2+n3), nrow(coordinates))
 
   # ---define the mean parameters
-  #Mu <- matrix(runif(9, -3, 3), 3, 3)
-  val <- 3
-  Mu <- matrix(c(-val,0,val,0,val,-val,val,-val,0),3,3)
-  #Mu <- matrix(0,3,3)
+  mu <- 5
+  Mu <- matrix(c(0,mu,-mu,-mu,0,mu,mu,-mu,0),3,3)
 
   # ---draw the Sigma2 matrices
   Sigma <- array(0, c(n1, n1, 3))
   Sigma[,,1] <- rWishart(n = 1, df = n1+10, Sigma = diag(.03, n1))[,,1]
-  Sigma[,,3] <- rWishart(n = 1, df = n1, Sigma = Sigma[,,1]/150)[,,1]+Sigma[,,1]
-  Sigma[,,2] <- Sigma[,,1] <- Sigma[,,3]
-  #Sigma[,,1] <- Sigma[,,3] <- Sigma[,,2]
+  Sigma[,,3] <- rWishart(n = 1, df = n1, Sigma = Sigma[,,1]/150)[,,1]
+  Sigma[,,2] <- rWishart(n = 1, df = n1, Sigma = Sigma[,,1]/150)[,,1]
+  Sigma[,,1] <- rWishart(n = 1, df = n1, Sigma = Sigma[,,1]/150)[,,1]
 
   # ---draw the blocks of x
   Kernels <- array(0, c(sum(Ds == 1), sum(Ds == 1), 3))
@@ -67,5 +65,5 @@ for(j in 1:n_replicas){
                      Xi = Xi,
                      KernelParameters = KernelParameters,
                      Sigma = Sigma)
-  #save(Simulation, file = paste("~/Scenario0_",j,".Rdata",sep=""))
+  save(Simulation, file = paste("~/Scenario0_",j,".Rdata",sep=""))
 }
