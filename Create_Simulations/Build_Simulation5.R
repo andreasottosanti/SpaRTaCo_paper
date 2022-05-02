@@ -31,11 +31,17 @@ subCluster.Cs[Cs[,1] == 3 & Cs[,2] == 3 & Cs[,3] == 3] <- 6
 
 
 
-# ---define the spatial signal-to-noise ratios 
+# ---define the spatial signal-to-noise ratios
 Ratios <- matrix(0,3,3)
 Ratios[1,] <- c(0, 3, 1)
 Ratios[2,] <- c(1, 0, 3)
 Ratios[3,] <- c(3, 1, 0)
+
+# ---define the mean
+Means <- matrix(0,3,3)
+Means[1,] <- c(-3, 0, 3)
+Means[2,] <- c(3, -3, 0)
+Means[3,] <- c(0, 3, -3)
 # convert the spatial signal-to-noise ratios into the values of tau and xi
 c_Delta <- 10    # this is the quantity tau[k,r]+xi[k,r]
 Tau <- c_Delta * Ratios/(Ratios+1)
@@ -50,7 +56,7 @@ n_replicas <- 1   # set the number of replicas (1 in the paper)
 for(j in 1:n_replicas){
   # create the empty data matrix
   x <- matrix(0, 600, nrow(coordinates))
-  
+
   # ---draw the Sigma2 matrices
   Sigma <- list()
   for(r in 1:3){
@@ -59,20 +65,22 @@ for(j in 1:n_replicas){
     Sigma[[r]][Cs[,r] == 2,Cs[,r] == 2] <- rWishart(n = 1, df = N[2,r]+30, Sigma = diag(.05, N[2,r]))[,,1]
     Sigma[[r]][Cs[,r] == 3,Cs[,r] == 3] <- rWishart(n = 1, df = N[3,r], Sigma = rWishart(n = 1, df = N[3,r]+10, Sigma = diag(.03, N[3,r]))[,,1]/150)[,,1]
   }
-  
+
   # ---draw the blocks of x
-  Kernels <- array(0, c(sum(Ds == 1), sum(Ds == 1), 3))
+  Kernels <- list()
   for(r in 1:3){
-    if(r == 1) Kernels[,,r] <- exp(-Dist[Ds == r, Ds == r]/KernelParameters$Exponential)
-    if(r == 2) Kernels[,,r] <- (1+Dist[Ds == r, Ds == r]^2/(2*KernelParameters$RatQuadr[2]*KernelParameters$RatQuadr[1]^2))^(-KernelParameters$RatQuadr[2])
-    if(r == 3) Kernels[,,r] <- exp(-Dist[Ds == r, Ds == r]^2/(2*KernelParameters$Gaussian^2))
+    Kernels[[r]] <- array(0, c(sum(Ds == r), sum(Ds == r), 3))
     for(k in 1:3){
-      Delta <- Tau[k,r]*Kernels[,,r]+diag(Xi[k,r], nrow = tableDs[r])
-      x[Cs[,r] == k, Ds == r] <- t(chol(Sigma[[r]][Cs[,r]==k,Cs[,r]==k])) %*% matrix(rnorm(sum(Cs[,r] == k)*tableDs[r]), sum(Cs[,r] == k), tableDs[r]) %*% chol(Delta)
+      if(k == 1) Kernels[[r]][,,k] <- exp(-Dist[Ds == r, Ds == r]/KernelParameters$Exponential)
+      if(k == 2) Kernels[[r]][,,k] <- (1+Dist[Ds == r, Ds == r]^2/(2*KernelParameters$RatQuadr[2]*KernelParameters$RatQuadr[1]^2))^(-KernelParameters$RatQuadr[2])
+      if(k == 3) Kernels[[r]][,,k] <- exp(-Dist[Ds == r, Ds == r]^2/(2*KernelParameters$Gaussian^2))
+      Delta <- Tau[k,r]*Kernels[[r]][,,k]+diag(Xi[k,r], nrow = tableDs[r])
+      x[Cs[,r] == k, Ds == r] <- Means[k,r]+
+        t(chol(Sigma[[r]][Cs[,r]==k, Cs[,r]==k])) %*% matrix(rnorm(sum(Cs[,r] == k)*tableDs[r]), sum(Cs[,r] == k), tableDs[r]) %*% chol(Delta)
     }
   }
-    
-  Simulation <- list(x = x, 
+
+  Simulation <- list(x = x,
                      original.Cs = Cs,
                      subCluster.Cs = subCluster.Cs,
                      original.Ds = Ds,
@@ -81,5 +89,5 @@ for(j in 1:n_replicas){
                      Xi = Xi,
                      KernelParameters = KernelParameters,
                      Sigma = Sigma)
-  save(Simulation, file = paste("~/Scenario5_",j,".Rdata",sep=""))
+  #save(Simulation, file = paste("~/Scenario5_",j,".Rdata",sep=""))
 }
